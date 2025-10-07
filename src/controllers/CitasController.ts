@@ -1,6 +1,7 @@
 // src/controllers/CitasController.ts
 import { Request, Response } from 'express';
-import { CitaService } from '../services/CitaService';
+import { CitaService } from '../services/CitaService.js';
+
 
 // El controlador es el puente entre el mundo de la web (HTTP) y nuestra lógica de negocio.
 export class CitasController {

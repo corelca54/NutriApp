@@ -1,9 +1,8 @@
 // src/services/CitaService.ts
-import { Cita, EstadoCita } from '../models/Cita';
-import { Horario, EstadoHorario } from '../models/Horario';
-import { Paciente } from '../models/Paciente';
-import { v4 as uuidv4 } from 'uuid'; //  instalamos uuid: npm install uuid @types/uuid
-
+import { Cita, EstadoCita } from '../models/Cita.js';      
+import { Horario, EstadoHorario } from '../models/Horario.js';  
+import { Paciente } from '../models/Paciente.js';          
+import { v4 as uuidv4 } from 'uuid';
 // --- SIMULACIÓN DE BASE DE DATOS ---
 // En un proyecto real, esto sería reemplazado por llamadas a una base de datos como PostgreSQL.
 const horariosDB: Horario[] = [

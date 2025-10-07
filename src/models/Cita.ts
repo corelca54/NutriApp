@@ -1,6 +1,6 @@
 // src/models/Cita.ts
-import { Horario } from './Horario';
-import { Paciente } from './Paciente';
+import { Horario } from './Horario.js';
+import { Paciente } from './Paciente.js';
 
 export enum EstadoCita {
     AGENDADA = "AGENDADA",
