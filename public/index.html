@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NutriApp - Agendar Cita</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            padding: 40px;
+            max-width: 500px;
+            width: 100%;
+        }
+
+        h1 {
+            color: #667eea;
+            text-align: center;
+            margin-bottom: 10px;
+            font-size: 28px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 14px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        button {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .alert {
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            display: none;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .alert.success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .alert.error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .alert-title {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .cita-detalles {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 10px;
+            font-size: 13px;
+        }
+
+        .cita-detalles p {
+            margin: 5px 0;
+        }
+
+        .cita-detalles strong {
+            color: #667eea;
+        }
+
+        .loading {
+            text-align: center;
+            color: #667eea;
+            font-weight: 600;
+        }
+
+        .horario-info {
+            font-size: 12px;
+            color: #666;
+            margin-top: 5px;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🥗 NutriApp</h1>
+        <p class="subtitle">Sistema de Agendamiento de Citas</p>
+
+        <div id="alert" class="alert"></div>
+
+        <form id="citaForm">
+            <div class="form-group">
+                <label for="nombre">Nombre Completo *</label>
+                <input 
+                    type="text" 
+                    id="nombre" 
+                    name="nombre" 
+                    placeholder="Ej: Juan Pérez"
+                    required
+                >
+            </div>
+
+            <div class="form-group">
+                <label for="correoElectronico">Correo Electrónico *</label>
+                <input 
+                    type="email" 
+                    id="correoElectronico" 
+                    name="correoElectronico" 
+                    placeholder="Ej: juan@example.com"
+                    required
+                >
+            </div>
+
+            <div class="form-group">
+                <label for="telefono">Teléfono *</label>
+                <input 
+                    type="tel" 
+                    id="telefono" 
+                    name="telefono" 
+                    placeholder="Ej: 3001234567"
+                    required
+                >
+            </div>
+
+            <div class="form-group">
+                <label for="idHorario">Seleccionar Horario *</label>
+                <select id="idHorario" name="idHorario" required>
+                    <option value="">-- Seleccione un horario --</option>
+                    <option value="h1">28 Oct 2025 - 2:00 PM</option>
+                    <option value="h2">28 Oct 2025 - 3:00 PM</option>
+                </select>
+                <p class="horario-info">💡 Los horarios se bloquean al ser agendados</p>
+            </div>
+
+            <button type="submit" id="submitBtn">
+                📅 Agendar Cita
+            </button>
+        </form>
+    </div>
+
+    <script>
+        const form = document.getElementById('citaForm');
+        const alertDiv = document.getElementById('alert');
+        const submitBtn = document.getElementById('submitBtn');
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            // Deshabilitar botón y mostrar loading
+            submitBtn.disabled = true;
+            submitBtn.textContent = '⏳ Agendando...';
+            alertDiv.style.display = 'none';
+
+            // Obtener datos del formulario
+            const formData = {
+                nombre: document.getElementById('nombre').value,
+                correoElectronico: document.getElementById('correoElectronico').value,
+                telefono: document.getElementById('telefono').value,
+                idHorario: document.getElementById('idHorario').value
+            };
+
+            try {
+                // Llamada a la API
+                const response = await fetch('http://localhost:3000/citas', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(formData)
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    // Éxito (201)
+                    mostrarAlerta('success', '✅ ¡Cita agendada exitosamente!', data);
+                    form.reset();
+                } else if (response.status === 409) {
+                    // Conflicto - Horario no disponible
+                    mostrarAlerta('error', '❌ Error al agendar', data);
+                } else if (response.status === 400) {
+                    // Datos faltantes
+                    mostrarAlerta('error', '⚠️ Datos incompletos', data);
+                } else {
+                    // Otro error
+                    mostrarAlerta('error', '❌ Error del servidor', data);
+                }
+            } catch (error) {
+                mostrarAlerta('error', '🔌 Error de conexión', {
+                    error: 'No se pudo conectar con el servidor. ¿Está ejecutando "npm run dev"?'
+                });
+            } finally {
+                // Rehabilitar botón
+                submitBtn.disabled = false;
+                submitBtn.textContent = '📅 Agendar Cita';
+            }
+        });
+
+        function mostrarAlerta(tipo, titulo, data) {
+            alertDiv.className = `alert ${tipo}`;
+            alertDiv.style.display = 'block';
+            
+            let contenido = `<div class="alert-title">${titulo}</div>`;
+            
+            if (tipo === 'success' && data.id) {
+                const fecha = new Date(data.fechaHora).toLocaleString('es-CO', {
+                    dateStyle: 'full',
+                    timeStyle: 'short'
+                });
+                contenido += `
+                    <div class="cita-detalles">
+                        <p><strong>ID Cita:</strong> ${data.id}</p>
+                        <p><strong>Paciente:</strong> ${data.paciente.nombre}</p>
+                        <p><strong>Fecha:</strong> ${fecha}</p>
+                        <p><strong>Estado:</strong> ${data.estado}</p>
+                    </div>
+                `;
+            } else if (data.error) {
+                contenido += `<p>${data.error}</p>`;
+            }
+            
+            alertDiv.innerHTML = contenido;
+            
+            // Scroll al alert
+            alertDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+    </script>
+</body>
+</html>
