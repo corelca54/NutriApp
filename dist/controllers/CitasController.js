@@ -1,9 +1,6 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.CitasController = void 0;
-const CitaService_1 = require("../services/CitaService");
+import { CitaService } from '../services/CitaService.js';
 // El controlador es el puente entre el mundo de la web (HTTP) y nuestra lógica de negocio.
-class CitasController {
+export class CitasController {
     constructor() {
         /**
          * Maneja la petición POST /citas.
@@ -35,7 +32,6 @@ class CitasController {
                 }
             }
         };
-        this.citaService = new CitaService_1.CitaService();
+        this.citaService = new CitaService();
     }
 }
-exports.CitasController = CitasController;

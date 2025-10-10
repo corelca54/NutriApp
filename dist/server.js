@@ -1,26 +1,37 @@
-"use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", { value: true });
 // src/server.ts
-const express_1 = __importDefault(require("express"));
-const CitasController_1 = require("./controllers/CitasController");
-const path_1 = __importDefault(require("path"));
-const app = (0, express_1.default)();
+import express from 'express';
+import { CitasController } from './controllers/CitasController.js';
+import path from 'path';
+import { fileURLToPath } from 'url';
+// ============================================
+// OBTENER __dirname EN ES MODULES
+// ============================================
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+// ============================================
+// 1. INICIALIZACIÓN
+// ============================================
+const app = express();
 const port = 3000;
-// Middlewares
-app.use(express_1.default.json());
-// NUEVO: Servir archivos estáticos
-app.use(express_1.default.static(path_1.default.join(__dirname, '../public')));
-// Controladores
-const citasController = new CitasController_1.CitasController();
-// Rutas API
+// ============================================
+// 2. MIDDLEWARES
+// ============================================
+app.use(express.json());
+app.use(express.static(path.join(__dirname, '../public')));
+// ============================================
+// 3. CONTROLADORES
+// ============================================
+const citasController = new CitasController();
+// ============================================
+// 4. RUTAS (ENDPOINTS REST)
+// ============================================
 app.post('/citas', citasController.agendar);
-// NUEVO: Ruta para servir el index.html
 app.get('/', (req, res) => {
-    res.sendFile(path_1.default.join(__dirname, '../public/index.html'));
+    res.sendFile(path.join(__dirname, '../public/index.html'));
 });
+// ============================================
+// 5. INICIAR EL SERVIDOR
+// ============================================
 app.listen(port, () => {
     console.log(`🚀 Servidor de NutriApp escuchando en http://localhost:${port}`);
     console.log(`✅ Frontend disponible en: http://localhost:${port}`);
